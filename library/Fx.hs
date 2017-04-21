@@ -22,6 +22,10 @@ newtype BothEffects effect1 effect2 context result =
   BothEffects (ReaderT (Executor effect1 context, Executor effect2 context) context result)
   deriving (Functor, Applicative, Monad, MonadIO)
 
+instance MonadTrans (BothEffects effect1 effect2) where
+  lift =
+    BothEffects . lift
+
 {-|
 Lift the first of the two effects.
 -}
