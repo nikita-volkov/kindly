@@ -1,7 +1,7 @@
 name:
   fx
 version:
-  0.1
+  0.2
 synopsis:
   Horizontally composable effects
 description:
@@ -46,7 +46,6 @@ library
   other-modules:
     Fx.Prelude
   build-depends:
-    -- control:
     transformers >= 0.3 && < 0.6,
-    -- general:
-    base-prelude >= 1 && < 2
+    base-prelude >= 1 && < 2,
+    base >= 4.6 && < 5

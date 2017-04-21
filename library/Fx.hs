@@ -1,43 +1,31 @@
 module Fx
+(
+  Fx2,
+  runFx2,
+  Executor(..),
+)
 where
 
 import Fx.Prelude
 
 
 {-|
-Executor of a single effect.
--}
-newtype Executor1 effect context =
-  Executor1 (forall result. effect result -> context result)
-
-{-|
-A product of two executors.
--}
-data Executor2 effect1 effect2 context =
-  Executor2
-    (Executor1 effect1 context)
-    (Executor1 effect2 context)
-
-{-|
-A product of three executors.
--}
-data Executor3 effect1 effect2 effect3 context =
-  Executor3
-    (Executor1 effect1 context)
-    (Executor1 effect2 context)
-    (Executor1 effect3 context)
-
-{-|
 A sum of two effects.
 -}
 newtype Fx2 effect1 effect2 context result =
-  Fx2 (ReaderT (Executor2 effect1 effect2 context) context result)
+  Fx2 (ReaderT (Executor effect1 context, Executor effect2 context) context result)
   deriving (Functor, Applicative, Monad, MonadIO)
+
+runFx2
+  :: Fx2 effect1 effect2 context result
+  -> Executor effect1 context
+  -> Executor effect2 context
+  -> context result
+runFx2 (Fx2 reader) executor1 executor2 =
+  runReaderT reader (executor1, executor2)
 
 {-|
-A sum of three effects.
+Executor of a single effect.
 -}
-newtype Fx3 effect1 effect2 effect3 context result =
-  Fx3 (ReaderT (Executor3 effect1 effect2 effect3 context) context result)
-  deriving (Functor, Applicative, Monad, MonadIO)
-
+newtype Executor effect context =
+  Executor (forall result. effect result -> context result)
