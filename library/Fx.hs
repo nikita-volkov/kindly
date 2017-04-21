@@ -13,7 +13,8 @@ import Fx.Prelude
 
 
 {-|
-A sum of two effects.
+A sum of two effects (@effect1@ and @effect2@) to be executed
+in @context@ resulting in @result@.
 -}
 newtype BothEffects effect1 effect2 context result =
   BothEffects (ReaderT (Executor effect1 context, Executor effect2 context) context result)
