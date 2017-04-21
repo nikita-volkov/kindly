@@ -5,6 +5,8 @@ module Fx
   liftEffect2,
   executorOfBothEffects,
   Executor(..),
+  mapExecutorEffect,
+  mapExecutorContext,
   executeEffect,
 )
 where
@@ -39,6 +41,20 @@ Executor of a single effect.
 -}
 newtype Executor effect context =
   Executor (forall result. effect result -> context result)
+
+{-|
+Map the effect part of an executor (contravariantly).
+-}
+mapExecutorEffect :: (forall result. effect2 result -> effect1 result) -> Executor effect1 context -> Executor effect2 context
+mapExecutorEffect mapping (Executor fn) =
+  Executor (fn . mapping)
+
+{-|
+Map the context part of an executor.
+-}
+mapExecutorContext :: (forall result. context1 result -> context2 result) -> Executor effect context1 -> Executor effect context2
+mapExecutorContext mapping (Executor fn) =
+  Executor (mapping . fn)
 
 {-|
 Compose the executors of each effect into an executor of both.
