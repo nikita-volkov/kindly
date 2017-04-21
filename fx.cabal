@@ -1,7 +1,7 @@
 name:
   fx
 version:
-  0.2
+  0.3
 synopsis:
   Horizontally composable effects
 description:
