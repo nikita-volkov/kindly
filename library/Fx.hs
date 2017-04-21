@@ -1,9 +1,11 @@
 module Fx
 (
   BothEffects,
+  liftEffect1,
+  liftEffect2,
   executorOfBothEffects,
   Executor(..),
-  runExecutor,
+  executeEffect,
 )
 where
 
@@ -18,7 +20,27 @@ newtype BothEffects effect1 effect2 context result =
   deriving (Functor, Applicative, Monad, MonadIO)
 
 {-|
-Composes the executors of each effect into an executor of both.
+Lift the first of the two effects.
+-}
+liftEffect1 :: effect1 result -> BothEffects effect1 effect2 context result
+liftEffect1 effect =
+  BothEffects (ReaderT (\(executor, _) -> executeEffect effect executor))
+
+{-|
+Lift the second of the two effects.
+-}
+liftEffect2 :: effect2 result -> BothEffects effect1 effect2 context result
+liftEffect2 effect =
+  BothEffects (ReaderT (\(_, executor) -> executeEffect effect executor))
+
+{-|
+Executor of a single effect.
+-}
+newtype Executor effect context =
+  Executor (forall result. effect result -> context result)
+
+{-|
+Compose the executors of each effect into an executor of both.
 -}
 executorOfBothEffects
   :: Executor effect1 context
@@ -28,14 +50,8 @@ executorOfBothEffects executor1 executor2 =
   Executor (\(BothEffects reader) -> runReaderT reader (executor1, executor2))
 
 {-|
-Executor of a single effect.
--}
-newtype Executor effect context =
-  Executor (forall result. effect result -> context result)
-
-{-|
 Use the executor to run an effect in a context.
 -}
-runExecutor :: Executor effect context -> effect result -> context result
-runExecutor (Executor def) =
-  def
+executeEffect :: effect result -> Executor effect context -> context result
+executeEffect effect (Executor def) =
+  def effect
