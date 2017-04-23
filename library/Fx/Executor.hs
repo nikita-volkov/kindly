@@ -1,9 +1,9 @@
 module Fx.Executor
 (
   Executor(..),
-  execute,
   mapEffect,
   mapContext,
+  execute,
 )
 where
 
