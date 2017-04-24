@@ -28,14 +28,14 @@ Lift the first of the two effects.
 -}
 liftEffect1 :: effect1 result -> EitherEffect effect1 effect2 context result
 liftEffect1 effect =
-  EitherEffect (ReaderT (\(executor, _) -> A.execute effect executor))
+  EitherEffect (ReaderT (\(executor, _) -> A.execute executor effect))
 
 {-|
 Lift the second of the two effects.
 -}
 liftEffect2 :: effect2 result -> EitherEffect effect1 effect2 context result
 liftEffect2 effect =
-  EitherEffect (ReaderT (\(_, executor) -> A.execute effect executor))
+  EitherEffect (ReaderT (\(_, executor) -> A.execute executor effect))
 
 {-|
 Compose the executors of each effect into an executor of either.

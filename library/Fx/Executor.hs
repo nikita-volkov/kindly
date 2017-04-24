@@ -19,8 +19,8 @@ newtype Executor effect context =
 {-|
 Use the executor to run an effect in a context.
 -}
-execute :: effect result -> Executor effect context -> context result
-execute effect (Executor def) =
+execute :: Executor effect context -> effect result -> context result
+execute (Executor def) effect =
   def effect
 
 {-|
