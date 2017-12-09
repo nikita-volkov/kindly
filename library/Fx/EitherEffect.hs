@@ -16,7 +16,7 @@ A sum of two effects (@effect1@ and @effect2@) to be executed
 in @context@ producing @result@.
 -}
 newtype EitherEffect effect1 effect2 context result =
-  EitherEffect (ReaderT (A.Executor effect1 context, A.Executor effect2 context) context result)
+  EitherEffect (ReaderT (A.Executor context effect1, A.Executor context effect2) context result)
   deriving (Functor, Applicative, Alternative, Monad, MonadPlus, MonadIO)
 
 instance MonadTrans (EitherEffect effect1 effect2) where
@@ -41,8 +41,8 @@ liftRight effect =
 Compose the executors of each effect into an executor of either.
 -}
 executor
-  :: A.Executor effect1 context
-  -> A.Executor effect2 context
-  -> A.Executor (EitherEffect effect1 effect2 context) context
+  :: A.Executor context effect1
+  -> A.Executor context effect2
+  -> A.Executor context (EitherEffect effect1 effect2 context)
 executor executor1 executor2 =
   A.Executor (\(EitherEffect reader) -> runReaderT reader (executor1, executor2))
