@@ -1,8 +1,8 @@
 module Fx.EitherEffect
 (
   EitherEffect,
-  liftEffect1,
-  liftEffect2,
+  liftLeft,
+  liftRight,
   executor,
 )
 where
@@ -26,15 +26,15 @@ instance MonadTrans (EitherEffect effect1 effect2) where
 {-|
 Lift the first of the two effects.
 -}
-liftEffect1 :: effect1 result -> EitherEffect effect1 effect2 context result
-liftEffect1 effect =
+liftLeft :: effect1 result -> EitherEffect effect1 effect2 context result
+liftLeft effect =
   EitherEffect (ReaderT (\(executor, _) -> A.execute executor effect))
 
 {-|
 Lift the second of the two effects.
 -}
-liftEffect2 :: effect2 result -> EitherEffect effect1 effect2 context result
-liftEffect2 effect =
+liftRight :: effect2 result -> EitherEffect effect1 effect2 context result
+liftRight effect =
   EitherEffect (ReaderT (\(_, executor) -> A.execute executor effect))
 
 {-|
