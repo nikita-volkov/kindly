@@ -43,7 +43,7 @@ library
     Haskell2010
   exposed-modules:
     Fx.EitherMonad
-    Fx.Transformation
+    Fx.Transform
   other-modules:
     Fx.EitherMonad.Types
     Fx.Prelude
