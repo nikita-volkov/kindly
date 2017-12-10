@@ -8,7 +8,6 @@ where
 
 import Fx.Prelude
 import Fx.EitherMonad.Types
-import Fx.Transformation.Types
 
 
 instance Functor (EitherMonad leftMonad rightMonad) where

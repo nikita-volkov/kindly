@@ -2,7 +2,6 @@ module Fx.EitherMonad.Types
 where
 
 import Fx.Prelude
-import Fx.Transformation.Types
 
 {-|
 A sum of two monads.
@@ -11,4 +10,4 @@ Allows for horizontal composition of monads instead of nesting as with monad tra
 To execute it use 'Fx.Transformation.eitherMonad'.
 -}
 newtype EitherMonad leftMonad rightMonad result =
-  EitherMonad (forall context. Monad context => (leftMonad --> context) -> (rightMonad --> context) -> context result)
+  EitherMonad (forall context. Monad context => (forall x. leftMonad x -> context x) -> (forall x. rightMonad x -> context x) -> context result)

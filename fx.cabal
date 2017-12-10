@@ -46,7 +46,6 @@ library
     Fx.Transformation
   other-modules:
     Fx.EitherMonad.Types
-    Fx.Transformation.Types
     Fx.Prelude
   build-depends:
     base >= 4.6 && < 5
