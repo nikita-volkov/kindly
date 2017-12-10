@@ -20,10 +20,6 @@ eitherMonad :: Monad either => (left --> either) -> (right --> either) -> (Eithe
 eitherMonad (Transform leftTrans) (Transform rightTrans) =
   Transform (\ (EitherMonad context) -> context leftTrans rightTrans)
 
-mapInput :: (newInput --> oldInput) -> (oldInput --> output) -> (newInput --> output)
-mapInput (Transform mapping) (Transform trans) =
-  Transform (trans . mapping)
-
-mapOutput :: (oldOutput --> newOutput) -> (input --> oldOutput) -> (input --> newOutput)
-mapOutput (Transform mapping) (Transform trans) =
-  Transform (mapping . trans)
+instance Category (-->) where
+  id = Transform id
+  (.) (Transform left) (Transform right) = Transform (left . right)

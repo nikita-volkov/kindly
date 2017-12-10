@@ -48,4 +48,4 @@ library
     Fx.EitherMonad.Types
     Fx.Prelude
   build-depends:
-    base >= 4.6 && < 5
+    base >= 4.10 && < 5
