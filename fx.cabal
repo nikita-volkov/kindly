@@ -42,10 +42,10 @@ library
   default-language:
     Haskell2010
   exposed-modules:
-    Fx.EitherMonad
+    Fx.EitherEffect
     Fx.Transform
   other-modules:
-    Fx.EitherMonad.Types
+    Fx.EitherEffect.Types
     Fx.Prelude
   build-depends:
     base >= 4.10 && < 5

@@ -2,7 +2,7 @@ module Fx.Transform
 where
 
 import Fx.Prelude
-import Fx.EitherMonad.Types
+import Fx.EitherEffect.Types
 
 
 {-|
@@ -16,9 +16,9 @@ newtype input --> output =
 Given a natural transformation of the left monad and a natural transformation of the right monad,
 produces a natural transformation of either of them.
 -}
-eitherMonad :: Monad either => (left --> either) -> (right --> either) -> (EitherMonad left right --> either)
-eitherMonad (Transform leftTrans) (Transform rightTrans) =
-  Transform (\ (EitherMonad context) -> context leftTrans rightTrans)
+eitherEffect :: Monad either => (left --> either) -> (right --> either) -> (EitherEffect left right either --> either)
+eitherEffect (Transform leftTrans) (Transform rightTrans) =
+  Transform (\ (EitherEffect context) -> context leftTrans rightTrans)
 
 instance Category (-->) where
   id = Transform id
