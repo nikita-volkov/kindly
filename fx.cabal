@@ -1,7 +1,7 @@
 name:
   fx
 version:
-  0.10
+  0.10.1
 synopsis:
   Horizontally composable effects
 description:
@@ -48,4 +48,4 @@ library
     Fx.EitherEffect.Types
     Fx.Prelude
   build-depends:
-    base >= 4.10 && < 5
+    base >= 4.9 && < 5
